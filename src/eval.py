@@ -72,7 +72,7 @@ def _resolve_ckpt_from_wandb(cfg: DictConfig) -> Optional[str]:
     try:
         import wandb  # type: ignore
     except Exception:
-        log.warning("WandB is not installed or unavailable; cannot resolve ckpt by tags. Please `pip install wandb`.")
+        log.warning("WandB is not installed or unavailable; cannot resolve ckpt by tags. Please `pip install wandb.yaml`.")
         return None
 
     # Convert OmegaConf containers into native Python types for JSON filters
@@ -92,7 +92,7 @@ def _resolve_ckpt_from_wandb(cfg: DictConfig) -> Optional[str]:
 
 
     # Resolve project/entity
-    # Prefer cfg.logger.wandb.*, fallback to cfg.logger.wandb_eval.* for backward compatibility,
+    # Prefer cfg.logger.wandb.yaml.*, fallback to cfg.logger.wandb_eval.* for backward compatibility,
     # then to standalone overrides (wandb_project/wandb_entity)
     project = (
         _get_cfg_value(cfg, ["project"]) or

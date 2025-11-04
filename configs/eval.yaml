@@ -14,18 +14,19 @@ task_name: "eval"
 
 # 用于从 W&B 过滤运行的标签
 # 可在命令行覆盖：tags=[dev,exp1]
-tags: ["mnist","experiment_X"]
+# 从 logger 配置中的 W&B tags 注入
+tags: ${logger.wandb.tags}
 
 # 评测用的 checkpoint 路径
 # 留空(null)表示由程序按 tags 从 W&B 自动解析
 ckpt_path: null
 
-project: "lightning-hydra-template"
+#project: "lightning-hydra-template"
 # 下面为自动解析可选项（均可在命令行覆盖）
-# +wandb_project=你的项目名；若 eval 启用了 logger=wandb，也可用 logger.wandb.project 指定
-wandb_project: null
-# +wandb_entity=你的团队名；若 eval 启用了 logger=wandb，也可用 logger.wandb.entity 指定
-wandb_entity: null
+# +wandb_project=你的项目名；若 eval 启用了 logger=wandb.yaml，也可用 logger.wandb.yaml.project 指定
+wandb_project: ${logger.wandb.project}
+# +wandb_entity=你的团队名；若 eval 启用了 logger=wandb.yaml，也可用 logger.wandb.yaml.entity 指定
+wandb_entity: ${logger.wandb.entity}
 # 排序指标，支持单个或列表；不设则按 val/acc_best, val/acc, test/acc 兜底
 metric: null
 # 排序方式：max 或 min

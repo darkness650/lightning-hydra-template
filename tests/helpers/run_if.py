@@ -68,7 +68,7 @@ class RunIf:
         :param sh: If `sh` module is required to run the test.
         :param fairscale: If `fairscale` module is required to run the test.
         :param deepspeed: If `deepspeed` module is required to run the test.
-        :param wandb: If `wandb` module is required to run the test.
+        :param wandb: If `wandb.yaml` module is required to run the test.
         :param neptune: If `neptune` module is required to run the test.
         :param comet: If `comet` module is required to run the test.
         :param mlflow: If `mlflow` module is required to run the test.
@@ -120,7 +120,7 @@ class RunIf:
 
         if wandb:
             conditions.append(not _WANDB_AVAILABLE)
-            reasons.append("wandb")
+            reasons.append("wandb.yaml")
 
         if neptune:
             conditions.append(not _NEPTUNE_AVAILABLE)

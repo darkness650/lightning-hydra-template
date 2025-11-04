@@ -82,12 +82,12 @@ def task_wrapper(task_func: Callable) -> Callable:
             # display output dir path in terminal
             log.info(f"Output dir: {cfg.paths.output_dir}")
 
-            # always close wandb run (even if exception occurs so multirun won't fail)
-            if find_spec("wandb"):  # check if wandb is installed
+            # always close wandb.yaml run (even if exception occurs so multirun won't fail)
+            if find_spec("wandb.yaml"):  # check if wandb.yaml is installed
                 import wandb
 
                 if wandb.run:
-                    log.info("Closing wandb!")
+                    log.info("Closing wandb.yaml!")
                     wandb.finish()
 
         return metric_dict, object_dict

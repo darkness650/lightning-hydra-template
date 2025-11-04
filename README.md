@@ -236,15 +236,15 @@ python train.py +trainer.
 <summary><b>Train model with any logger available in PyTorch Lightning, like W&B or Tensorboard</b></summary>
 
 ```yaml
-# set project and entity names in `configs/logger/wandb`
+# set project and entity names in `configs/logger/wandb.yaml`
 wandb:
   project: "your_project_name"
   entity: "your_wandb_team_name"
 ```
 
 ```bash
-# train model with Weights&Biases (link to wandb dashboard should appear in the terminal)
-python train.py logger=wandb
+# train model with Weights&Biases (link to wandb.yaml dashboard should appear in the terminal)
+python train.py logger=wandb.yaml
 ```
 
 > **Note**: Lightning provides convenient integrations with most popular logging frameworks. Learn more [here](#experiment-tracking).

@@ -87,7 +87,7 @@ def test_optuna_sweep(tmp_path: Path) -> None:
 @RunIf(wandb=True, sh=True)
 @pytest.mark.slow
 def test_optuna_sweep_ddp_sim_wandb(tmp_path: Path) -> None:
-    """Test Optuna sweep with wandb logging and ddp sim.
+    """Test Optuna sweep with wandb.yaml logging and ddp sim.
 
     :param tmp_path: The temporary logging path.
     """
@@ -102,6 +102,6 @@ def test_optuna_sweep_ddp_sim_wandb(tmp_path: Path) -> None:
         "+trainer.limit_train_batches=0.01",
         "+trainer.limit_val_batches=0.1",
         "+trainer.limit_test_batches=0.1",
-        "logger=wandb",
+        "logger=wandb.yaml",
     ]
     run_sh_command(command)
