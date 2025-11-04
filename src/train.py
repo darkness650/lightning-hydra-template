@@ -3,9 +3,8 @@ from typing import Any, Dict, List, Optional, Tuple
 import hydra
 import lightning as L
 import rootutils
-import torch
 from lightning import Callback, LightningDataModule, LightningModule, Trainer
-from lightning.pytorch.loggers import Logger
+from lightning.pytorch.loggers import Logger, WandbLogger
 from omegaconf import DictConfig
 
 rootutils.setup_root(__file__, indicator=".project-root", pythonpath=True)
@@ -90,12 +89,23 @@ def train(cfg: DictConfig) -> Tuple[Dict[str, Any], Dict[str, Any]]:
 
     if cfg.get("test"):
         log.info("Starting testing!")
-        ckpt_path = trainer.checkpoint_callback.best_model_path
+        ckpt_cb = getattr(trainer, "checkpoint_callback", None)
+        ckpt_path = getattr(ckpt_cb, "best_model_path", "") if ckpt_cb else ""
         if ckpt_path == "":
-            log.warning("Best ckpt not found! Using current weights for testing...")
+            log.warning("Best checkpoint not found! Using current weights for testing...")
             ckpt_path = None
         trainer.test(model=model, datamodule=datamodule, ckpt_path=ckpt_path)
-        log.info(f"Best ckpt path: {ckpt_path}")
+        log.info(f"Best checkpoint path: {ckpt_path}")
+
+        # Record best checkpoint path to WandB summary for easy lookup online
+        if logger:
+            for lg in logger:
+                if isinstance(lg, WandbLogger):
+                    try:
+                        if lg.experiment is not None:
+                            lg.experiment.summary["best_ckpt_path"] = ckpt_path
+                    except Exception as e:
+                        log.warning(f"Failed to log best_ckpt_path to WandB: {e}")
 
     test_metrics = trainer.callback_metrics
 

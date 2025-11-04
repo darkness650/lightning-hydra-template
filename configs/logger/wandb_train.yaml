@@ -1,0 +1,16 @@
+# https://wandb.ai
+
+wandb:
+  _target_: lightning.pytorch.loggers.wandb.WandbLogger
+  save_dir: "${paths.output_dir}"
+  offline: False
+  id: null
+  anonymous: null
+  project: "lightning-hydra-template"
+  log_model: False
+  prefix: ""
+  # entity: ""  # 可在命令行覆盖 logger.wandb.entity=你的团队
+  group: "train"
+  tags: ["mnist","experiment_X"]
+  job_type: ""
+
