@@ -25,7 +25,8 @@ def log_hyperparameters(object_dict: Dict[str, Any]) -> None:
     cfg = OmegaConf.to_container(object_dict["cfg"])
     model = object_dict["model"]
     trainer = object_dict["trainer"]
-
+    if "group" in object_dict:
+        hparams["group"] = object_dict["group"]
     if not trainer.logger:
         log.warning("Logger not found! Skipping hyperparameter logging...")
         return

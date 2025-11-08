@@ -6,6 +6,7 @@ import rootutils
 from lightning import Callback, LightningDataModule, LightningModule, Trainer
 from lightning.pytorch.loggers import Logger, WandbLogger
 from omegaconf import DictConfig
+from swanlab.integration.pytorch_lightning import SwanLabLogger
 
 rootutils.setup_root(__file__, indicator=".project-root", pythonpath=True)
 # ------------------------------------------------------------------------------------ #
@@ -103,9 +104,19 @@ def train(cfg: DictConfig) -> Tuple[Dict[str, Any], Dict[str, Any]]:
                 if isinstance(lg, WandbLogger):
                     try:
                         if lg.experiment is not None:
+                            lg.experiment.summary["group"] = cfg.get("group", "train")
                             lg.experiment.summary["best_ckpt_path"] = ckpt_path
                     except Exception as e:
                         log.warning(f"Failed to log best_ckpt_path to WandB: {e}")
+                # 仅在存在 SwanLabLogger 类时才进行 isinstance 判断
+                else:
+                    if isinstance(lg,SwanLabLogger):
+                        try:
+                            if lg.experiment is not None:
+                                lg.log_hyperparams({"group": cfg.get("group", "train")})
+                                lg.log_hyperparams({"best_ckpt_path": ckpt_path})
+                        except Exception as e:
+                            log.warning(f"Failed to log best_ckpt_path to swanlab: {e}")
 
     test_metrics = trainer.callback_metrics
 

@@ -1,0 +1,14 @@
+# https://swanlab.ai
+swanlab:
+  _target_: swanlab.integration.pytorch_lightning.SwanLabLogger
+  # 实验输出目录（本地缓存）
+  logdir: ${paths.output_dir}
+  # 项目名（SwanLab 项目）
+  project: "lightning-hydra-template"
+  # 运行名（可留空让 SwanLab 自动生成）
+  run_name: null
+  # 标签
+  tags: ["mnist", "experiment_X"]
+  # 上报模式：online / offline
+  mode: "online"
+  group: null

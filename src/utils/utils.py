@@ -90,6 +90,13 @@ def task_wrapper(task_func: Callable) -> Callable:
                     log.info("Closing wandb.yaml!")
                     wandb.finish()
 
+            if find_spec("swanlab.yaml"):
+                import swanlab
+
+                if swanlab.run:
+                    log.info("Closing swan.yaml!")
+                    swanlab.finish()
+
         return metric_dict, object_dict
 
     return wrap

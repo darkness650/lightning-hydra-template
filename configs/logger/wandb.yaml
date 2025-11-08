@@ -1,8 +1,7 @@
 # https://wandb.ai
-
 wandb:
   _target_: lightning.pytorch.loggers.WandbLogger
-  save_dir: "${paths.output_dir}"
+  save_dir: ${paths.output_dir}
   offline: False
   id: null
   anonymous: null
@@ -10,7 +9,7 @@ wandb:
   log_model: False
   prefix: ""
   # entity: ""  # 可在命令行覆盖 logger.wandb.yaml.entity=你的团队
-  group: "train"
   tags: ["mnist","experiment_X"]
   job_type: ""
-
+  entity: null
+  group: null

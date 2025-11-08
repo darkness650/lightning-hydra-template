@@ -4,7 +4,7 @@ defaults:
   - _self_
   - data: mnist # choose datamodule with `test_dataloader()` for evaluation
   - model: mnist
-  - logger: wandb_eval
+  - logger: swanlab
   - trainer: default
   - paths: default
   - extras: default
@@ -12,27 +12,21 @@ defaults:
 
 task_name: "eval"
 
-# 用于从 W&B 过滤运行的标签
-# 可在命令行覆盖：tags=[dev,exp1]
-# 从 logger 配置中的 W&B tags 注入
-tags: ${logger.wandb.tags}
+# 用于过滤运行的标签（可在命令行覆盖：tags=[dev,exp1]）
+# 从 logger 配置中的 SwanLab tags 注入
+tags: ${logger.swanlab.tags}
 
+group: "eval"
 # 评测用的 checkpoint 路径
-# 留空(null)表示由程序按 tags 从 W&B 自动解析
+# 留空(null)表示由程序自动解析或手动在命令行传入
 ckpt_path: null
-
-#project: "lightning-hydra-template"
-# 下面为自动解析可选项（均可在命令行覆盖）
-# +wandb_project=你的项目名；若 eval 启用了 logger=wandb.yaml，也可用 logger.wandb.yaml.project 指定
-wandb_project: ${logger.wandb.project}
-# +wandb_entity=你的团队名；若 eval 启用了 logger=wandb.yaml，也可用 logger.wandb.yaml.entity 指定
-wandb_entity: ${logger.wandb.entity}
-# 排序指标，支持单个或列表；不设则按 val/acc_best, val/acc, test/acc 兜底
-metric: null
-# 排序方式：max 或 min
-mode: max
-# 是否优先通过 W&B Artifacts 下载 ckpt；否则回退到 summary.best_ckpt_path
-use_artifacts: true
-
-# 查询 W&B 运行的分组（例如只在训练组中查找）
 search_group: "train"
+
+# 新增：自动解析 ckpt 的来源，auto/swan/wandb
+ckpt_source: auto
+# 可选：单独指定用于查询的标签（不填则用上面的 tags）
+search_tags: ${tags}
+# 可选：W&B 的 entity（若使用 W&B）
+entity: null
+# 可选：W&B 解析是否优先用 Artifact
+use_artifacts: true

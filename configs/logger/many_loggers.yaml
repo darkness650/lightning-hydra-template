@@ -6,4 +6,7 @@ defaults:
   # - mlflow
   # - neptune
   - tensorboard
+  - wandb
+  - swanlab
   - wandb.yaml
+  - swanlab.yaml
